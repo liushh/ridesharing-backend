@@ -10,3 +10,4 @@ class App(falcon.API):
 
     def _configure_routes(self):
         self.add_route('/hello_world', HelloWorldResource())
+        self.add_route('/', HelloWorldResource())

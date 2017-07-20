@@ -1,0 +1,6 @@
+runtime: custom
+env: flex
+entrypoint: gunicorn -b :$PORT app:api
+
+runtime_config:
+  python_version: 3

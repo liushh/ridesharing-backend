@@ -1,6 +1,15 @@
 runtime: custom
 env: flex
+
+env_variables:
+    SQLALCHEMY_DATABASE_URI: postgresql+psycopg2://liusha:12345@/postgres?host=/cloudsql/liusha-hello-world:us-west1:postgre
+
 entrypoint: gunicorn -b :$PORT app:api
+
+
+beta_settings:
+    cloud_sql_instances: liusha-hello-world:us-west1:postgre
 
 runtime_config:
   python_version: 3
+

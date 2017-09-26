@@ -13,4 +13,4 @@ class User(Base):
     phone = Column(String, index=True, nullable=True)
     auth0_id = Column(String, index=True, unique=True)
 
-    trips = relationship('User')
+    trips = relationship('Trip')

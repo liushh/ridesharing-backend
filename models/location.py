@@ -10,7 +10,7 @@ class Location(Base):
     id = Column(Integer(), primary_key=True)
     street = Column(String, nullable=True)
     streetNumber = Column(String, nullable=True)
-    colonyOrDistrict = Column(String, nullable=True)
+    colony_or_district = Column(String, nullable=True)
     city = Column(String, nullable=True)
     state = Column(String, nullable=True)
     country = Column(String, nullable=True)

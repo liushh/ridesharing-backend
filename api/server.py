@@ -1,6 +1,7 @@
 import falcon
 
-from api import HelloWorldResource
+from api.resources import HelloWorldResource
+from api.resources import TripsResource
 from database import Database
 from middlewares.database import DatabaseMiddleware
 
@@ -17,6 +18,8 @@ class App(falcon.API):
     def _configure_routes(self):
         self.add_route('/hello_world', HelloWorldResource())
         self.add_route('/', HelloWorldResource())
+
+        self.add_route('/api/trips', TripsResource())
 
     def _get_middlewares(self, config):
         database = DatabaseMiddleware(self._database)

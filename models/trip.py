@@ -10,8 +10,8 @@ class Trip(Base):
     id = Column(Integer, primary_key=True)
     drive_or_ride = Column(String, nullable=False)
     time = Column(DateTime, nullable=False)
-    origin = relationship('Location', ForeignKey('location.id'), back_populates='trip')
-    destination = relationship('Location', ForeignKey('location.id'), back_populates='trip')
+    origin = relationship('Origin', back_populates='trip', uselist=False)
+    destination = relationship('Destination', back_populates='trip', uselist=False)
 
     user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship('User', back_populates='trip')
+    user = relationship('User', back_populates='trips', uselist=False)

@@ -10,11 +10,18 @@ class TestCase(testing.TestCase):
     def setUp(self):
         super(TestCase, self).setUp()
         self.app = App(Test)
+        db = self.app.get_database()
+        db.create_database()
+
         self.make_a_trip()
+
+    def tearDown(self):
+        db = self.app.get_database()
+        db.delete_database()
 
 
     def make_a_trip(self):
-        from models import Trip, User, Location
+        from models import Trip, User, Origin, Destination
 
         session = self.get_session()
 
@@ -25,26 +32,26 @@ class TestCase(testing.TestCase):
 
         session.save(user)
 
-        origin = Location(street='Baker St',
+        origin = Origin(street='Baker St',
                             streetNumber='221B',
-                            colony_or_district='221B',
+                            colony_or_district='Marylebone',
                             city='London',
                             state='Marylebone',
                             country='UK',
                             zipcode='NW1 6XE')
         session.save(origin)
 
-        destination = Location(street='Baker St',
-                            streetNumber='221B',
-                            colony_or_district='221B',
-                            city='London',
-                            state='Marylebone',
-                            country='UK',
-                            zipcode='NW1 6XE')
-        session.save(origin)
+        destination = Destination(street='Wallaby Way',
+                            streetNumber='42',
+                            colony_or_district='-',
+                            city='Sydney',
+                            state='New South Wales',
+                            country='Australia',
+                            zipcode='31351')
+        session.save(destination)
 
         trip = Trip(drive_or_ride='Drive',
-                    time=datetime.now(),
+                    time=datetime(1992, 9, 4),
                     origin=origin,
                     destination=destination,
                     user=user)

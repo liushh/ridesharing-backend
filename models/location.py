@@ -1,13 +1,19 @@
 from sqlalchemy import Column, String, ForeignKey, Integer
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import declared_attr
 
-from models.base import Base
 
+class Location:
 
-class Location(Base):
-    __tablename__ = 'location'
+    @declared_attr
+    def trip_id(cls):
+        return Column(Integer, ForeignKey('trip.id'))
 
-    id = Column(Integer(), primary_key=True)
+    @declared_attr
+    def trip(cls):
+        return relationship('Trip')
+
+    id = Column(Integer, primary_key=True)
     street = Column(String, nullable=True)
     streetNumber = Column(String, nullable=True)
     colony_or_district = Column(String, nullable=True)
@@ -15,6 +21,3 @@ class Location(Base):
     state = Column(String, nullable=True)
     country = Column(String, nullable=True)
     zipcode = Column(String, nullable=True)
-
-    trip_id = Column(Integer, ForeignKey('trip.id'))
-    trip = relationship('Trip')

@@ -9,7 +9,7 @@ from tests import TestCase
 class TestTrips(TestCase):
     def test_get_all_trips(self):
         response = self.simulate_get('/api/trips')
-        expected_trip = {
+        expected_trips = [{
             'id': 1,
             'driveOrRide': 'Drive',
             'origin': {
@@ -23,7 +23,7 @@ class TestTrips(TestCase):
                 'colony': '-',
             },
             'time': datetime(1992, 9, 4).strftime('%s')
-        }
+        }]
 
         expect(response.status).to.equal(falcon.HTTP_OK)
-        expect(response.json).to.equal(expected_trip)
+        expect(response.json).to.equal(expected_trips)

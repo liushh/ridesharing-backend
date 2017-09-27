@@ -5,10 +5,13 @@ from models.trip import Trip
 
 class TripsResource:
     def on_get(self, req, resp):
-        trip = req.db.query(Trip).first()
-        resp.body = json.dumps(self.get_serialize_trip(trip))
+        trips = req.db.query(Trip).all()
+        resp.body = self._get_serialize_trips(trips)
 
-    def get_serialize_trip(self, trip):
+    def _get_serialize_trips(self, trips):
+        return json.dumps([self._get_serialize_trip(trip) for trip in trips])
+
+    def _get_serialize_trip(self, trip):
         return {
             'id': trip.id,
             'driveOrRide': trip.drive_or_ride,

@@ -4,6 +4,7 @@ from api.resources import HelloWorldResource
 from api.resources import TripsResource
 from database import Database
 from middlewares.database import DatabaseMiddleware
+from middlewares.json import JSONMiddleware
 
 
 class App(falcon.API):
@@ -23,8 +24,9 @@ class App(falcon.API):
 
     def _get_middlewares(self, config):
         database = DatabaseMiddleware(self._database)
+        json = JSONMiddleware()
 
-        return [database]
+        return [database, json]
 
     def get_database(self):
         return self._database

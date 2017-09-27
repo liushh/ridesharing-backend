@@ -29,25 +29,24 @@ class TestCase(testing.TestCase):
                     email='liusha@wizeline.com',
                     phone='123456789',
                     auth0_id='123')
-
         session.save(user)
 
         origin = Origin(street='Baker St',
-                            streetNumber='221B',
-                            colony_or_district='Marylebone',
-                            city='London',
-                            state='Marylebone',
-                            country='UK',
-                            zipcode='NW1 6XE')
+                        street_number='221B',
+                        colony_or_district='Marylebone',
+                        city='London',
+                        state='Marylebone',
+                        country='UK',
+                        zipcode='NW1 6XE')
         session.save(origin)
 
         destination = Destination(street='Wallaby Way',
-                            streetNumber='42',
-                            colony_or_district='-',
-                            city='Sydney',
-                            state='New South Wales',
-                            country='Australia',
-                            zipcode='31351')
+                                  street_number='42',
+                                  colony_or_district='-',
+                                  city='Sydney',
+                                  state='New South Wales',
+                                  country='Australia',
+                                  zipcode='31351')
         session.save(destination)
 
         trip = Trip(drive_or_ride='Drive',

@@ -1,7 +1,7 @@
 import falcon
 from sure import expect
 
-from tests import TestCase
+from test import TestCase
 
 
 class TestHelloWorld(TestCase):

@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from dateutil import parser
 
 import falcon
 
@@ -7,24 +8,49 @@ from models import Trip, User, Origin, Destination
 
 
 class TripsResource:
+    REQUIRED_REQUEST_ATTRS = [
+        'email',
+        'driveOrRide',
+        'time',
+        'origin',
+        'destination'
+    ]
+
     def on_post(self, req, resp):
         data = req.json
+        if not self._is_valid_request_payload(data):
+            raise falcon.HTTPBadRequest()
 
-        origin = self._get_location(Origin, data['origin'])
-        req.db.save(origin)
+        try:
+            origin = self._get_location(Origin, data['origin'])
+            req.db.save(origin)
+        except KeyError:
+            raise falcon.HTTPBadRequest('Invalid origin payload')
 
-        destination = self._get_location(Destination, data['destination'])
-        req.db.save(destination)
+        try:
+            destination = self._get_location(Destination, data['destination'])
+            req.db.save(destination)
+        except KeyError:
+            raise falcon.HTTPBadRequest('Invalid destination payload')
 
         trip = Trip(drive_or_ride='Drive',
                     origin=origin,
                     destination=destination,
                     user=self._get_current_user(req.db.query, data),
-                    time=self._get_trip_time(data))
+                    time=parser.parse(data['time']))  # data['time'] example: 2016-10-19T20:17:52.2891902Z
         req.db.save(trip)
 
         resp.json = self._get_serialize_trip(trip)
         resp.status = falcon.HTTP_CREATED
+
+    def _is_valid_request_payload(self, data):
+        keys = data.keys()
+        if keys == {}:
+            return False
+        for attr in self.REQUIRED_REQUEST_ATTRS:
+            if attr not in keys:
+                return False
+        return True
 
     def _get_current_user(self, query, data):
         user = query(User) \
@@ -35,33 +61,14 @@ class TripsResource:
         return data_model_klass(
             street=self._get_location_attr(data, 'street'),
             street_number=self._get_location_attr(data, 'streetNumber'),
-            colony_or_district=self._get_location_attr(data, 'colonyOrDistrict'),
+            colony_or_district=data['colonyOrDistrict'],
             city=self._get_location_attr(data, 'city'),
             state=self._get_location_attr(data, 'state'),
             country=self._get_location_attr(data, 'country'),
-            zipcode=self._get_location_attr(data, 'zipcode'))
+            zipcode=data['zipcode'])
 
     def _get_location_attr(self, location_data, attr):
         return location_data.get(attr) or ''
-
-    def _get_trip_time(self, data):
-        minute = self._get_minute(data['hoursAndMinutes'])
-        hour = self._get_hour(data['hoursAndMinutes'])
-        month = data['month'].lstrip('0')
-        day = data['day'].lstrip('0')
-        return datetime.now().replace(minute=int(minute),
-                                      hour=int(hour),
-                                      month=int(month),
-                                      day=int(day))
-
-    def _get_minute(self, hoursAndMinutes):
-        minute = hoursAndMinutes.split(':')[1]
-        return minute.lstrip('0')
-
-    def _get_hour(self, hoursAndMinutes):
-        hour = hoursAndMinutes.split(':')[0]
-        return hour.lstrip('0')
-
 
     def on_get(self, req, resp):
         trips = req.db.query(Trip).filter(Trip.time > datetime.now())
@@ -85,5 +92,5 @@ class TripsResource:
                 'zipcode': trip.destination.zipcode,
                 'colonyOrDistrict': trip.destination.colony_or_district,
             },
-            'time': trip.time.strftime('%s')
+            'time': trip.time.strftime('%Y-%m-%d %H:%M:%S UTC')
         }

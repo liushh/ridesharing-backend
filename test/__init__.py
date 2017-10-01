@@ -1,6 +1,6 @@
 # flake8: noqa
 from falcon import testing
-from datetime import datetime
+from dateutil import parser
 
 from config import Test
 from api.server import App
@@ -50,7 +50,7 @@ class TestCase(testing.TestCase):
         session.save(destination)
 
         trip = Trip(drive_or_ride='Drive',
-                    time=datetime(1992, 9, 4),
+                    time=parser.parse('2110-10-20 03:17:52 UTC'),
                     origin=origin,
                     destination=destination,
                     user=user)

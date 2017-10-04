@@ -17,6 +17,7 @@ class TripsResource:
     ]
 
     def on_post(self, req, resp):
+        print('POST!!!!!!!!!!!!!!!!!!')
         data = req.json
         if not self._is_valid_request_payload(data):
             raise falcon.HTTPBadRequest()
@@ -33,10 +34,10 @@ class TripsResource:
         except KeyError:
             raise falcon.HTTPBadRequest('Invalid destination payload')
 
-        trip = Trip(drive_or_ride='Drive',
+        trip = Trip(drive_or_ride=data['driveOrRide'],
                     origin=origin,
                     destination=destination,
-                    user=self._get_current_user(req.db.query, data),
+                    user=self._get_current_user(req.db.query, 'liusha@wizeline.com'),
                     time=parser.parse(data['time']))  # data['time'] example: 2016-10-19T20:17:52.2891902Z
         req.db.save(trip)
 
@@ -52,9 +53,10 @@ class TripsResource:
                 return False
         return True
 
-    def _get_current_user(self, query, data):
+    def _get_current_user(self, query, email):
         user = query(User) \
-            .filter(User.email == data['email']).first()
+            .filter(User.email == email).first()
+        print('user = ', user)
         return user
 
     def _get_location(self, data_model_klass, data):
@@ -71,6 +73,7 @@ class TripsResource:
         return location_data.get(attr) or ''
 
     def on_get(self, req, resp):
+        print('GET!!!!!!!!!!!!!!!!!!!!!')
         trips = req.db.query(Trip).filter(Trip.time > datetime.now())
         resp.body = self._get_serialize_trips(trips)
         resp.status = falcon.HTTP_OK
@@ -81,6 +84,9 @@ class TripsResource:
     def _get_serialize_trip(self, trip):
         return {
             'id': trip.id,
+            'email': trip.user.email,
+            'name': trip.user.username,
+            'phone': trip.user.phone,
             'driveOrRide': trip.drive_or_ride,
             'origin': {
                 'isOffice': False,

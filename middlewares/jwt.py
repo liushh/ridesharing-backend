@@ -52,13 +52,10 @@ class JWTMiddleware:
 
         with self.database.session() as session:
             try:
-                user = self._find_user_by_auth0_id(session, auth0_id)
+                req.current_user = self._find_user_by_auth0_id(session, auth0_id)
             except UserNotRegistered:
-                user = self._create_user(session, auth0_id)
+                req.current_user = self._create_user(session, auth0_id)
 
-            current_user = self._to_dict(user)
-
-        req.current_user = current_user
         return req.current_user
 
     def _create_user(self, session, auth0_id):
@@ -103,14 +100,6 @@ class JWTMiddleware:
             return user
 
         raise UserNotRegistered
-
-    def _to_dict(self, user):
-        return {
-            'id': user.id,
-            'username': user.username,
-            'email': user.email
-        }
-
 
 class Auth0UserCreator:
     def __init__(self, domain, client_id, client_secret, access_token=None, token_type='Bearer'):

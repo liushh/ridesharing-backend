@@ -37,7 +37,7 @@ class TripsResource:
         trip = Trip(drive_or_ride=data['driveOrRide'],
                     origin=origin,
                     destination=destination,
-                    user=self._get_current_user(req.db.query, 'liusha@wizeline.com'),
+                    user=req.current_user,
                     time=parser.parse(data['time']))  # data['time'] example: 2016-10-19T20:17:52.2891902Z
         req.db.save(trip)
 

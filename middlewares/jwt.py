@@ -39,7 +39,6 @@ class JWTMiddleware:
 
         try:
             payload = self._decode_token(token)
-            print('print jwt payload = ', payload)
             auth0_id = self._get_user_id(payload)
         except jwt.ExpiredSignatureError:
             raise falcon.HTTPUnauthorized('Token has expired')

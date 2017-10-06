@@ -74,7 +74,8 @@ class TripsResource:
 
     def on_get(self, req, resp):
         print('GET!!!!!!!!!!!!!!!!!!!!!')
-        trips = req.db.query(Trip).filter(Trip.time > datetime.now())
+        # trips = req.db.query(Trip).filter(Trip.time > datetime.now()).order_by(Trip.time.asc())
+        trips = req.db.query(Trip).order_by(Trip.time.asc()).all()
         resp.body = self._get_serialize_trips(trips)
         resp.status = falcon.HTTP_OK
 

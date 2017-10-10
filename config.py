@@ -20,8 +20,8 @@ class Config:
 
 
 class Development(Config):
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://liusha:12345@/postgres?host=/cloudsql/liusha-hello-world:us-west1:postgre'
-
+    CORS_ORIGIN = '*'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:hls901021@/postgres?host=/cloudsql/liusha-hello-world:us-west1:wizepool'
     AUTH0_CLIENT_ID = 'f4to0gzhJ4eWYx7MaquQdPFxu873B5Pc'
     AUTH0_CLIENT_SECRET = 'HLYF-N5JCdpN9viGqhmD1dAKljnJr7wpdxbLiwljMiSdx0PVmYiMQ2F4KbPnsyYC'
     AUTH0_AUDIENCE = 'f4to0gzhJ4eWYx7MaquQdPFxu873B5Pc'
@@ -31,8 +31,6 @@ class Development(Config):
 
 class Local(Config):
     CORS_ORIGIN = '*'
-    APPLICATION_DOMAIN = os.environ.get('APPLICATION_DOMAIN')
-
     SQLALCHEMY_DATABASE_URI = 'postgresql://liusha@localhost/sample'
     AUTH0_CLIENT_ID = 'f4to0gzhJ4eWYx7MaquQdPFxu873B5Pc'
     AUTH0_CLIENT_SECRET = 'HLYF-N5JCdpN9viGqhmD1dAKljnJr7wpdxbLiwljMiSdx0PVmYiMQ2F4KbPnsyYC'
@@ -44,7 +42,6 @@ class Local(Config):
 class Test(Config):
     SQLALCHEMY_DATABASE_URI = 'sqlite:///'
     CORS_ORIGIN = 'http://localhost'
-    APPLICATION_DOMAIN = 'https://test.wizeline.com'
 
     AUTH0_CLIENT_ID = 'theidentifier'
     AUTH0_CLIENT_SECRET = 'thesecret'

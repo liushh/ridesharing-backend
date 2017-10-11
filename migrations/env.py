@@ -73,10 +73,8 @@ def run_migrations_online():
     and associate a connection with the context.
 
     """
-    # engine = create_engine(AppConfig.SQLALCHEMY_DATABASE_URI)
-    # engine = create_engine('postgresql+psycopg2://postgres:hls901021@/postgres?host=/cloudsql/liusha-hello-world:us-west1:postgres')
-    engine = create_engine('postgresql+psycopg2://postgres:hls901021@/postgres?host=/cloudsql/liusha-hello-world:us-west1:wizepool')
-    
+    engine = create_engine(AppConfig.SQLALCHEMY_DATABASE_URI)
+
     with engine.connect() as connection:
         context.configure(
             connection=connection,

@@ -21,7 +21,7 @@ class Config:
 
 class Development(Config):
     CORS_ORIGIN = '*'
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:hls901021@/postgres?host=/cloudsql/liusha-hello-world:us-west1:wizepool'
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:hls901021@/postgres?host=/cloudsql/wizepool-182516:us-central1:wizepool'
     AUTH0_CLIENT_ID = 'f4to0gzhJ4eWYx7MaquQdPFxu873B5Pc'
     AUTH0_CLIENT_SECRET = 'HLYF-N5JCdpN9viGqhmD1dAKljnJr7wpdxbLiwljMiSdx0PVmYiMQ2F4KbPnsyYC'
     AUTH0_AUDIENCE = 'f4to0gzhJ4eWYx7MaquQdPFxu873B5Pc'

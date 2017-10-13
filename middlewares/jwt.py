@@ -28,18 +28,26 @@ class JWTMiddleware:
         self.user_creator = user_creator
 
     def process_resource(self, req, resp, resource, params):
+        print('JWTMiddleware process_resource')
         is_public_resource = getattr(resource, 'is_public', False)
+
+        print('is_public_resource = ', is_public_resource)
         if is_public_resource:
+
+            print('should return null is_public_resource = ', is_public_resource)
             return
 
         token = req.get_header('Authorization')
 
         if not token:
+            print('does not have token')
             raise falcon.HTTPUnauthorized('No auth token found')
 
         try:
             payload = self._decode_token(token)
+            print('tokwn payload = ', payload)
             auth0_id = self._get_user_id(payload)
+            print('auth0_id = ', auth0_id)
         except jwt.ExpiredSignatureError:
             raise falcon.HTTPUnauthorized('Token has expired')
         except jwt.InvalidAudienceError:
@@ -50,11 +58,16 @@ class JWTMiddleware:
             raise falcon.HTTPUnauthorized('Auth token is not valid')
 
         with self.database.session() as session:
+            print('start to create a user if does not exist')
             try:
                 req.current_user = self._find_user_by_auth0_id(session, auth0_id)
+                print('found req.current_user = ', req.current_user)
             except UserNotRegistered:
+                print('creating a new user')
                 req.current_user = self._create_user(session, auth0_id)
+                print('created req.current_user = ', req.current_user)
 
+        print('going to return req.current_user')
         return req.current_user
 
     def _create_user(self, session, auth0_id):

@@ -6,14 +6,21 @@ import falcon
 
 class JSONMiddleware:
     def process_resource(self, req, resp, resource, params):
+        print('JSONMiddleware process_resource')
         if self._is_middleware_enabled(resource) and self._request_method_has_payload(req):
+            print('_is_middleware_enabled  and _request_method_has_payload')
             if not self._is_json_content_type(req):
+                print('false from _is_json_content_type')
                 raise falcon.HTTPUnsupportedMediaType()
 
+            print('great content')
             try:
                 req.text = self._get_payload(req)
+                print('req.text = ', req.text)
                 req.json = json.loads(req.text)
+                print('req.json = ', req.json)
             except JSONDecodeError:
+                print('JSON decode error!!!!!!!!!!!!!!!!')
                 raise falcon.HTTPInternalServerError()
 
     def _is_middleware_enabled(self, resource):

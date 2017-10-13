@@ -24,6 +24,9 @@ class Session:
         self._session.delete(model)
         self._session.commit()
 
+    def commit(self):
+        self._session.commit()
+
 
 class Database:
     def __init__(self, configuration=None):

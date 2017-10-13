@@ -23,6 +23,8 @@ class App(falcon.API):
         self.add_route('/hello_world', HelloWorldResource())
         self.add_route('/', HelloWorldResource())
 
+        self.add_route('/api/trips/{trip_id}', TripsResource())
+
         self.add_route('/api/trips', TripsResource())
 
     def _get_middlewares(self, config):

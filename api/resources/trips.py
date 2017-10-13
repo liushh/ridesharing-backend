@@ -16,6 +16,47 @@ class TripsResource:
         'destination'
     ]
 
+    def on_delete(self, req, resp, trip_id):
+
+        trip = req.db.query(Trip).filter(Trip.id == trip_id).first()
+        resp.json = self._get_serialize_trip(trip)
+        
+        req.db.delete(trip.origin)
+        req.db.delete(trip.destination)
+        req.db.delete(trip)
+
+        resp.status = falcon.HTTP_OK
+
+    def on_put(self, req, resp):
+        print('PUT!!!!!!!!!!!!!!!!!!!!')
+        data = req.json
+        if not self._is_valid_request_payload(data):
+            raise falcon.HTTPBadRequest()
+
+        try:
+            origin = self._get_location(Origin, data['origin'])
+            req.db.save(origin)
+        except KeyError:
+            raise falcon.HTTPBadRequest('Invalid origin payload')
+
+        try:
+            destination = self._get_location(Destination, data['destination'])
+            req.db.save(destination)
+        except KeyError:
+            raise falcon.HTTPBadRequest('Invalid destination payload')
+
+        trip = req.db.query(Trip).filter(Trip.id == data['id']).first()
+        trip.drive_or_ride = data['driveOrRide']
+        trip.time = parser.parse(data['time'])
+        print('data[time] = ', data['time'])
+        print('parser.parse(data[time]) = ', parser.parse(data['time']))
+        trip.origin = origin
+        trip.destination = destination
+
+        req.db.commit()
+        resp.json = self._get_serialize_trip(trip)
+        resp.status = falcon.HTTP_OK
+
     def on_post(self, req, resp):
         print('POST!!!!!!!!!!!!!!!!!!')
         data = req.json
@@ -39,6 +80,10 @@ class TripsResource:
                     destination=destination,
                     user=req.current_user,
                     time=parser.parse(data['time']))  # data['time'] example: 2016-10-19T20:17:52.2891902Z
+
+        print('??? ', type(parser.parse(data['time'])))
+        print('data[time] = ', data['time'])
+        print('parser.parse(data[time]) = ', parser.parse(data['time']))
         req.db.save(trip)
 
         resp.json = self._get_serialize_trip(trip)

@@ -2,15 +2,14 @@ runtime: custom
 env: flex
 
 env_variables:
-    SQLALCHEMY_DATABASE_URI: postgresql+psycopg2://postgres:hls901021@/postgres?host=/cloudsql/liusha-hello-world:us-west1:wizepool
+    SQLALCHEMY_DATABASE_URI: postgresql+psycopg2://postgres:hls901021@/postgres?host=/cloudsql/wizepool-182516:us-central1:wizepool
                              
 
 entrypoint: gunicorn -b :$PORT app:api
 
 
 beta_settings:
-    cloud_sql_instances: liusha-hello-world:us-west1:wizepool
+    cloud_sql_instances: wizepool-182516:us-central1:wizepool
 
 runtime_config:
   python_version: 3
-

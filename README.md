@@ -27,3 +27,7 @@ run the command `gunicorn app:api`
 server => is the file name. in this case there should be a file app.py under the directory for this command
 api => is the variable/object name that we assign the falcon.API class for. In this case => api = falcon.API()
 
+
+## Before deploy
+
+  * Update the environment variable in app.py

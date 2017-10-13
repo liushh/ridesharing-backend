@@ -51,6 +51,9 @@ class TripsResource:
         trip.origin = origin
         trip.destination = destination
 
+        if 'phone' in data:
+            trip.user.phone = data['phone']
+
         req.db.commit()
         resp.json = self._get_serialize_trip(trip)
         resp.status = falcon.HTTP_OK
@@ -78,6 +81,10 @@ class TripsResource:
                     destination=destination,
                     user=req.current_user,
                     time=datetime.strptime(data['time'], '%Y-%m-%dT%H:%M:%S +00:00'))  # data['time'] example: 2016-10-19T20:17:52 +00:00
+
+        if 'phone' in data:
+            trip.user.phone = data['phone']
+
         req.db.save(trip)
 
         resp.json = self._get_serialize_trip(trip)

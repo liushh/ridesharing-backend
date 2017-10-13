@@ -20,7 +20,7 @@ class TripsResource:
 
         trip = req.db.query(Trip).filter(Trip.id == trip_id).first()
         resp.json = self._get_serialize_trip(trip)
-        
+
         req.db.delete(trip.origin)
         req.db.delete(trip.destination)
         req.db.delete(trip)
@@ -47,9 +47,7 @@ class TripsResource:
 
         trip = req.db.query(Trip).filter(Trip.id == data['id']).first()
         trip.drive_or_ride = data['driveOrRide']
-        trip.time = parser.parse(data['time'])
-        print('data[time] = ', data['time'])
-        print('parser.parse(data[time]) = ', parser.parse(data['time']))
+        trip.time = datetime.strptime(data['time'], '%Y-%m-%dT%H:%M:%S +00:00')  # data['time'] example: 2016-10-19T20:17:52 +00:00
         trip.origin = origin
         trip.destination = destination
 
@@ -79,11 +77,7 @@ class TripsResource:
                     origin=origin,
                     destination=destination,
                     user=req.current_user,
-                    time=parser.parse(data['time']))  # data['time'] example: 2016-10-19T20:17:52.2891902Z
-
-        print('??? ', type(parser.parse(data['time'])))
-        print('data[time] = ', data['time'])
-        print('parser.parse(data[time]) = ', parser.parse(data['time']))
+                    time=datetime.strptime(data['time'], '%Y-%m-%dT%H:%M:%S +00:00'))  # data['time'] example: 2016-10-19T20:17:52 +00:00
         req.db.save(trip)
 
         resp.json = self._get_serialize_trip(trip)
@@ -101,7 +95,6 @@ class TripsResource:
     def _get_current_user(self, query, email):
         user = query(User) \
             .filter(User.email == email).first()
-        print('user = ', user)
         return user
 
     def _get_location(self, data_model_klass, data):

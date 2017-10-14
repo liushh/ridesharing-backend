@@ -31,3 +31,5 @@ api => is the variable/object name that we assign the falcon.API class for. In t
 ## Before deploy
 
   * Update the environment variable in app.py
+
+  * Update the environment variable in migration/env if you need to update database

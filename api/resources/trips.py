@@ -79,7 +79,7 @@ class TripsResource:
         trip = Trip(drive_or_ride=data['driveOrRide'],
                     origin=origin,
                     destination=destination,
-                    user=req.current_user,
+                    user=req.current_user['modle'],
                     time=datetime.strptime(data['time'], '%Y-%m-%dT%H:%M:%S +00:00'))  # data['time'] example: 2016-10-19T20:17:52 +00:00
 
         if 'phone' in data:
@@ -98,11 +98,6 @@ class TripsResource:
             if attr not in keys:
                 return False
         return True
-
-    def _get_current_user(self, query, email):
-        user = query(User) \
-            .filter(User.email == email).first()
-        return user
 
     def _get_location(self, data_model_klass, data):
         return data_model_klass(

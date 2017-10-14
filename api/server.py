@@ -2,7 +2,7 @@ import falcon
 from falcon_cors import CORS
 
 from api.resources import HelloWorldResource
-from api.resources import TripsResource
+from api.resources import TripsResource, UsersResource
 from database import Database
 from middlewares.database import DatabaseMiddleware
 from middlewares.json import JSONMiddleware
@@ -26,6 +26,8 @@ class App(falcon.API):
         self.add_route('/api/trips/{trip_id}', TripsResource())
 
         self.add_route('/api/trips', TripsResource())
+
+        self.add_route('/api/user', UsersResource())
 
     def _get_middlewares(self, config):
         database = DatabaseMiddleware(self._database)

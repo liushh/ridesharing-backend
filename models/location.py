@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, ForeignKey, Integer
+from sqlalchemy import Column, String, ForeignKey, Integer, Boolean
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declared_attr
 
@@ -21,3 +21,4 @@ class Location:
     state = Column(String, nullable=True)
     country = Column(String, nullable=True)
     zipcode = Column(String, nullable=True)
+    is_office = Column(Boolean, default=False, nullable=True)

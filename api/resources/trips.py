@@ -112,15 +112,16 @@ class TripsResource:
             city=self._get_location_attr(data, 'city'),
             state=self._get_location_attr(data, 'state'),
             country=self._get_location_attr(data, 'country'),
-            zipcode=data['zipcode'])
+            zipcode=data['zipcode'],
+            is_office=data['isOffice'])
 
     def _get_location_attr(self, location_data, attr):
         return location_data.get(attr) or ''
 
     def on_get(self, req, resp):
         print('GET!!!!!!!!!!!!!!!!!!!!!')
-        # trips = req.db.query(Trip).filter(Trip.time > datetime.now()).order_by(Trip.time.asc())
-        trips = req.db.query(Trip).order_by(Trip.time.asc()).all()
+        trips = req.db.query(Trip).filter(Trip.time > datetime.now()).order_by(Trip.time.asc())
+        # trips = req.db.query(Trip).order_by(Trip.time.asc()).all()
         resp.body = self._get_serialize_trips(trips)
         resp.status = falcon.HTTP_OK
 
@@ -135,12 +136,12 @@ class TripsResource:
             'phone': trip.user.phone,
             'driveOrRide': trip.drive_or_ride,
             'origin': {
-                'isOffice': False,
+                'isOffice': trip.origin.is_office,
                 'zipcode': trip.origin.zipcode,
                 'colonyOrDistrict': trip.origin.colony_or_district,
             },
             'destination': {
-                'isOffice': False,
+                'isOffice': trip.destination.is_office,
                 'zipcode': trip.destination.zipcode,
                 'colonyOrDistrict': trip.destination.colony_or_district,
             },

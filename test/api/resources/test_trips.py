@@ -10,6 +10,7 @@ from test import TestCase
 class TestTrips(TestCase):
     VALID_TRIP_PAYLOAD = {
         'email': 'liusha@wizeline.com',
+        'phone': '12345678',
         'driveOrRide': 'Drive',
         'time': '2016-10-19T20:17:52.2891902Z',
         'origin': {

@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), '..'
 import config  # noqa
 
 try:
-    environment = os.environ.get('ENV', 'Development')
+    environment = os.environ.get('ENV', 'Local')
     AppConfig = getattr(config, environment)
 except AttributeError:
     raise Exception(

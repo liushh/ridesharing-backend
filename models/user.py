@@ -1,5 +1,4 @@
 from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import relationship
 
 from models.base import Base
 
@@ -13,4 +12,3 @@ class User(Base):
     phone = Column(String, index=True, nullable=True)
     auth0_id = Column(String, index=True, unique=True)
 
-    trips = relationship('Trip')

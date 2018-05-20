@@ -2,7 +2,8 @@ import falcon
 from falcon_cors import CORS
 
 from api.resources import HelloWorldResource
-from api.resources import TripsResource, UsersResource
+from api.resources import UsersResource
+from api.resources import SpaceResource
 from database import Database
 from middlewares.database import DatabaseMiddleware
 from middlewares.json import JSONMiddleware
@@ -21,21 +22,19 @@ class App(falcon.API):
 
     def _configure_routes(self):
         self.add_route('/hello_world', HelloWorldResource())
-        self.add_route('/', HelloWorldResource())
-
-        self.add_route('/api/trips/{trip_id}', TripsResource())
-
-        self.add_route('/api/trips', TripsResource())
 
         self.add_route('/api/user', UsersResource())
+
+        self.add_route('/api/space/{office_id}', SpaceResource())
 
     def _get_middlewares(self, config):
         database = DatabaseMiddleware(self._database)
         json = JSONMiddleware()
         cors = self._get_cors_middleware(config)
-        auth = self._get_auth_middleware(config)
+        # auth = self._get_auth_middleware(config)
 
-        return [cors, auth, database, json]
+        # return [cors, auth, database, json]
+        return [cors, database, json]
 
     def get_database(self):
         return self._database
@@ -48,6 +47,7 @@ class App(falcon.API):
 
         if config.CORS_ORIGIN == '*':
             cors_options['allow_all_origins'] = True
+            print('allow_all_origins!!!!!!!!!!!!!!!!!!')
         elif isinstance(config.CORS_ORIGIN, str):
             cors_options['allow_origins_list'] = [config.CORS_ORIGIN]
         elif isinstance(config.CORS_ORIGIN, list):

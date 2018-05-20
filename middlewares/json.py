@@ -28,7 +28,7 @@ class JSONMiddleware:
             or not resource.disable_json_middleware
 
     def _request_method_has_payload(self, req):
-        return req.method in ('POST', 'PUT')
+        return req.method in ('POST', 'PATCH')
 
     def _is_json_content_type(self, req):
         return req.content_type in ['application/json', 'text/json']

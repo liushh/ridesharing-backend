@@ -11,4 +11,5 @@ class Space(Base):
     owner_name = Column(String(60), nullable=True)
     owner_id = Column(String(60), index=True, nullable=True)
     team = Column(String(60), index=True, nullable=True)
+    project = Column(String(60), index=True, nullable=True)
     space_type = Column(String(60), index=True, nullable=True)

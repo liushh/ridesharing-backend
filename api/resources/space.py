@@ -36,8 +36,30 @@ class SpaceResource:
         except (TypeError, JSONDecodeError) as e:
             raise falcon.HTTPBadRequest(e)
 
-    def on_patch(self, req, resp):
-        pass
+    def on_patch(self, req, resp, space_id):
+        # TODO validate json paylaod
+        data = req.json
+        try:
+            space = req.db.query(Space) \
+                .filter(Space.id == space_id) \
+                .first()
+
+            space.owner_name = data.get('owner_name')
+            space.team = data.get('team')
+            space.project = data.get('project')
+            space.space_type = data.get('space_type')
+
+            req.db.save(space)
+
+            spaces = req.db.query(Space) \
+                .filter(Space.office_id == space.office_id) \
+                .all()
+
+            resp.json = [self._space_to_json(space) for space in spaces]
+            print('resp.json = ', resp.json)
+            resp.status = falcon.HTTP_OK
+        except (TypeError, JSONDecodeError) as e:
+            raise falcon.HTTPBadRequest(e)
 
     def on_delete(self, req, resp, space_id):
         if not space_id:

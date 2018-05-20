@@ -25,7 +25,9 @@ class App(falcon.API):
 
         self.add_route('/api/user', UsersResource())
 
-        self.add_route('/api/space/{office_id}', SpaceResource())
+        self.add_route('/api/space/{space_id}', SpaceResource())
+
+        self.add_route('/api/spaces/{office_id}', SpaceResource())
 
     def _get_middlewares(self, config):
         database = DatabaseMiddleware(self._database)

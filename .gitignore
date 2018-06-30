@@ -118,3 +118,7 @@ pip-selfcheck.json
 pyvenv.cfg
 
 eggs/*
+
+#env vars
+gunicorn_config.py
+gunicorn_config_local.py

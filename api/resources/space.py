@@ -27,7 +27,8 @@ class SpaceResource:
                 owner_name=data.get('owner_name'),
                 owner_id=data.get('owner_id'),
                 team=data.get('team'),
-                space_type=data.get('space_type')
+                space_type=data.get('space_type'),
+                project=data.get('project')
             )
             req.db.save(space)
 
@@ -86,5 +87,6 @@ class SpaceResource:
             'owner_id': space.owner_id,
             'team': space.team,
             'space_type': space.space_type,
+            'project': space.project,
             'basic_units': json.loads(space.basic_units)
         }

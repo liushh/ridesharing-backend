@@ -1,4 +1,5 @@
 import logging
+import os
 
 
 class Config:
@@ -19,23 +20,27 @@ class Config:
 
 
 class Development(Config):
-    CORS_ORIGIN = '*'
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:hls901021@/postgres?host=/cloudsql/wizepool-182516:us-central1:wizepool'
-    AUTH0_CLIENT_ID = 'f4to0gzhJ4eWYx7MaquQdPFxu873B5Pc'
-    AUTH0_CLIENT_SECRET = 'HLYF-N5JCdpN9viGqhmD1dAKljnJr7wpdxbLiwljMiSdx0PVmYiMQ2F4KbPnsyYC'
-    AUTH0_AUDIENCE = 'f4to0gzhJ4eWYx7MaquQdPFxu873B5Pc'
-    AUTH0_ISSUER = 'https://liushh.auth0.com/'
-    AUTH0_DOMAIN = 'liushh.auth0.com'
+    CORS_ORIGIN = os.environ.get('CORS_ORIGIN')
+
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
+
+    AUTH0_CLIENT_ID = os.environ.get('AUTH0_CLIENT_ID')
+    AUTH0_CLIENT_SECRET = os.environ.get('AUTH0_CLIENT_SECRET')
+    AUTH0_AUDIENCE = os.environ.get('AUTH0_AUDIENCE')
+    AUTH0_ISSUER = os.environ.get('AUTH0_ISSUER')
+    AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
 
 
 class Local(Config):
-    CORS_ORIGIN = '*'
-    SQLALCHEMY_DATABASE_URI = 'postgresql://liusha@localhost/officemap'
-    AUTH0_CLIENT_ID = 'f4to0gzhJ4eWYx7MaquQdPFxu873B5Pc'
-    AUTH0_CLIENT_SECRET = 'HLYF-N5JCdpN9viGqhmD1dAKljnJr7wpdxbLiwljMiSdx0PVmYiMQ2F4KbPnsyYC'
-    AUTH0_AUDIENCE = 'f4to0gzhJ4eWYx7MaquQdPFxu873B5Pc'
-    AUTH0_ISSUER = 'https://liushh.auth0.com/'
-    AUTH0_DOMAIN = 'liushh.auth0.com'
+    CORS_ORIGIN = os.environ.get('CORS_ORIGIN')
+
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
+
+    AUTH0_CLIENT_ID = os.environ.get('AUTH0_CLIENT_ID')
+    AUTH0_CLIENT_SECRET = os.environ.get('AUTH0_CLIENT_SECRET')
+    AUTH0_AUDIENCE = os.environ.get('AUTH0_AUDIENCE')
+    AUTH0_ISSUER = os.environ.get('AUTH0_ISSUER')
+    AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
 
 
 class Test(Config):

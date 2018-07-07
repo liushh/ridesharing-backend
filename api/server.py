@@ -34,10 +34,9 @@ class App(falcon.API):
         database = DatabaseMiddleware(self._database)
         json = JSONMiddleware()
         cors = self._get_cors_middleware(config)
-        # auth = self._get_auth_middleware(config)
+        auth = self._get_auth_middleware(config)
 
-        # return [cors, auth, database, json]
-        return [cors, database, json]
+        return [cors, auth, database, json]
 
     def get_database(self):
         return self._database
@@ -80,18 +79,11 @@ class App(falcon.API):
         if not has_valid_value('AUTH0_DOMAIN'):
             raise Exception('Please set a valid Auth0 domain (AUTH0_DOMAIN)')
 
-        creator = Auth0UserCreator(
-                config.AUTH0_DOMAIN,
-                config.AUTH0_CLIENT_ID,
-                config.AUTH0_CLIENT_SECRET
-            )
-
         jwt = JWTMiddleware(
-                self._database,
-                config.AUTH0_CLIENT_SECRET,
-                config.AUTH0_AUDIENCE,
-                config.AUTH0_ISSUER,
-                user_creator=creator
-            )
+            self._database,
+            config.AUTH0_CLIENT_SECRET,
+            config.AUTH0_AUDIENCE,
+            config.AUTH0_ISSUER
+        )
 
         return AuthMiddleware(jwt)

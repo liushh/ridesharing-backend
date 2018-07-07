@@ -57,27 +57,27 @@ class JWTMiddleware:
         except (jwt.InvalidTokenError, InvalidPayload):
             raise falcon.HTTPUnauthorized('Auth token is not valid')
 
-        with self.database.session() as session:
-            print('start to create a user if does not exist')
-            try:
-                user = self._find_user_by_auth0_id(session, auth0_id)
-                print('found req.current_user = ', user)
-            except UserNotRegistered:
-                print('creating a new user')
-                user = self._create_user(session, auth0_id)
-                print('created req.current_user = ', user)
-            finally:
-                req.current_user = {
-                    'model': user,
-                    'serialized_data': {
-                        'email': user.email,
-                        'username': user.username,
-                        'phone': user.phone,
-                    }
-                }
-        print('going to return req.current_user')
-        
-        return req.current_user
+        # with self.database.session() as session:
+        #     print('start to create a user if does not exist')
+        #     try:
+        #         user = self._find_user_by_auth0_id(session, auth0_id)
+        #         print('found req.current_user = ', user)
+        #     except UserNotRegistered:
+        #         print('creating a new user')
+        #         user = self._create_user(session, auth0_id)
+        #         print('created req.current_user = ', user)
+        #     finally:
+        #         req.current_user = {
+        #             'model': user,
+        #             'serialized_data': {
+        #                 'email': user.email,
+        #                 'username': user.username,
+        #                 'phone': user.phone,
+        #             }
+        #         }
+        # print('going to return req.current_user')
+
+        # return req.current_user
 
     def _create_user(self, session, auth0_id):
         if not self._can_create_users():

@@ -1,9 +1,12 @@
 import falcon
 from falcon_cors import CORS
 
-from api.resources import HelloWorldResource
-from api.resources import UsersResource
-from api.resources import SpaceResource
+from api.resources import (
+    HelloWorldResource,
+    UsersResource,
+    SpaceResource,
+    AvailableSpaceResource
+)
 from database import Database
 from middlewares.database import DatabaseMiddleware
 from middlewares.json import JSONMiddleware
@@ -29,6 +32,7 @@ class App(falcon.API):
         self.add_route('/api/space/{space_id}', SpaceResource())
 
         self.add_route('/api/spaces/{office_id}', SpaceResource())
+        self.add_route('/api/available_space/{office_id}', AvailableSpaceResource())
 
     def _get_middlewares(self, config):
         database = DatabaseMiddleware(self._database)
